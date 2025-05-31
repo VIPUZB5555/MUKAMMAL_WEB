@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kalkulyator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="{{ url_for('index') }}">Toq va Juft Aniqlovchi</a></li>
+        <li><a href="{{ url_for('xo') }}">X va O o'yini</a></li>
+        <li><a href="{{ url_for('calculator') }}">Kalkulyator</a></li>
+        <li><a href="{{ url_for('services') }}">Xizmat Ko'rsatish</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h1>Kalkulyator</h1>
+    <form method="POST">
+        <input type="number" step="any" name="num1" required placeholder="Birinchi son" />
+        <input type="number" step="any" name="num2" required placeholder="Ikkinchi son" />
+        <select name="operation" required>
+            <option value="add">Qo‘shish (+)</option>
+            <option value="subtract">Ayirish (-)</option>
+            <option value="multiply">Ko‘paytirish (×)</option>
+            <option value="divide">Bo‘lish (÷)</option>
+        </select>
+        <button type="submit">Hisoblash</button>
+    </form>
+    {% if natija is not none %}
+    <div class="result">
+        <p><strong>Natija:</strong> {{ natija }}</p>
+    </div>
+    {% endif %}
+</div>
+<footer>
+    <p>Rustamov Og'abekning web ilovasi</p>
+</footer>
+</body>
+</html>
