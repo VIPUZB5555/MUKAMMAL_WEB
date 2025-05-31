@@ -1,0 +1,22 @@
+# Python cache fayllari
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+env/
+
+# Maxfiy ma'lumotlar
+.env
+
+# Operatsion tizim fayllari
+.DS_Store
+Thumbs.db
+
+# IDE fayllari
+.vscode/
+.idea/
+
+# Log va vaqtinchalik fayllar
+*.log
+*.tmp
