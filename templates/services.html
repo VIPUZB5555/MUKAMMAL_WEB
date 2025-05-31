@@ -1,0 +1,68 @@
+<!-- templates/xizmat.html -->
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xizmatlar - AI Chat</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    #chat-box {
+        width: 100%;
+        max-width: 600px;
+        margin: auto;
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 10px;
+        background: #f8f8f8;
+        height: 400px;
+        overflow-y: auto;
+    }
+    .message {
+        margin-bottom: 10px;
+    }
+    .user {
+        color: blue;
+    }
+    .bot {
+        color: green;
+    }
+    #user-input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Sun'iy intellekt yordamchisi</h1>
+  <div id="chat-box"></div>
+  <form id="chat-form">
+    <input type="text" id="user-input" placeholder="Savolingizni yozing..." autocomplete="off" required />
+  </form>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const form = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userText = userInput.value;
+        chatBox.innerHTML += `<div class="message user"><strong>Siz:</strong> ${userText}</div>`;
+        userInput.value = '';
+
+        const response = await fetch('/ai-chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userText })
+        });
+        const data = await response.json();
+        chatBox.innerHTML += `<div class="message bot"><strong>Bot:</strong> ${data.reply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  </script>
+</body>
+</html>
