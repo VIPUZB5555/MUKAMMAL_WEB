@@ -1,12 +1,14 @@
-from flask import Flask, render_template, request, jsonify
-import requests
 import os
+from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
+import openai
 
-# .env fayldan token o‘qish
 load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
+
+openai.api_key = OPENAI_API_KEY
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -54,29 +56,28 @@ def calculator():
 def services():
     return render_template('services.html')
 
-@app.route('/ai-chat', methods=['POST'])
-def ai_chat():
-    data = request.get_json()
-    user_msg = data.get("message", "")
-    
-    headers = {
-        "Authorization": f"Bearer {os.getenv('HF_TOKEN')}"
-    }
-    payload = {
-        "inputs": user_msg
-    }
+# AI chatbot uchun API endpoint (AJAX orqali ishlatish uchun)
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.json
+    user_message = data.get('message')
 
-    response = requests.post(
-        "https://api-inference.huggingface.co/models/google/flan-t5-base",
-        headers=headers,
-        json=payload
-    )
+    if not user_message:
+        return jsonify({'response': 'Iltimos, xabar kiriting.'})
+
     try:
-        reply = response.json()[0]["generated_text"]
-    except:
-        reply = "Kechirasiz, javob bera olmadim."
-    
-    return jsonify({"reply": reply})
+        response = openai.ChatCompletion.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": user_message}],
+            max_tokens=150,
+            temperature=0.7,
+        )
+        answer = response['choices'][0]['message']['content'].strip()
+    except Exception as e:
+        answer = f"Xatolik yuz berdi: {str(e)}"
+
+    return jsonify({'response': answer})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
