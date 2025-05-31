@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Toq va Juft Sonlar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="{{ url_for('index') }}">Toq va Juft Aniqlovchi</a></li>
+        <li><a href="{{ url_for('xo') }}">X va O o'yini</a></li>
+        <li><a href="{{ url_for('calculator') }}">Kalkulyator</a></li>
+        <li><a href="{{ url_for('services') }}">Xizmat Ko'rsatish</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h1>Toq va Juft son aniqlovchi</h1>
+    <form method="POST">
+        <label for="son">Iltimos, bir butun son kiriting:</label>
+        <input type="number" id="son" name="son" required min="1" value="{{ son if son else '' }}" />
+        <button type="submit">Hisoblash</button>
+    </form>
+
+    {% if son %}
+    <div class="result">
+        <p><strong>Juft sonlar soni:</strong> {{ juftlar|length }}</p>
+        <p><strong>Juft sonlar ro'yxati:</strong> {{ juftlar|join(', ') }}</p>
+        <p><strong>Toq sonlar soni:</strong> {{ toqlar|length }}</p>
+        <p><strong>Toq sonlar ro'yxati:</strong> {{ toqlar|join(', ') }}</p>
+    </div>
+    {% endif %}
+</div>
+<footer>
+    <p>Rustamov Og'abekning web ilovasi</p>
+</footer>
+</body>
+</html>
